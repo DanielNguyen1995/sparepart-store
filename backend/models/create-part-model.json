@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "part",
+    "type": "object",
+    "properties": {
+      "partNum": {
+        "type": "string",
+        "minLength": 2
+      },
+      "description": {
+        "type": "string",
+        "minLength": 2
+      },
+      "vendorPartNum": {
+        "type": "string",
+        "minLength": 4
+      },
+      "vendor": {
+        "type": "string",
+        "minLength": 2
+      },
+      "inStock": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "required": [
+      "partNum",
+      "description",
+      "vendorPartNum",
+      "vendor",
+      "inStock"
+    ],
+    "additionalProperties": false
+  }
+  
