@@ -3,21 +3,20 @@
     "title": "part",
     "type": "object",
     "properties": {
-      "partNum": {
-        "type": "string",
-        "minLength": 2
-      },
       "description": {
         "type": "string",
-        "minLength": 2
+        "minLength": 2,
+        "pattern": "^[^-\\s][a-zA-Z0-9_\\s-]+$"
       },
       "vendorPartNum": {
         "type": "string",
-        "minLength": 4
+        "minLength": 2,
+        "pattern": "^[^-\\s][a-zA-Z0-9_\\s-]+$"
       },
       "vendor": {
         "type": "string",
-        "minLength": 2
+        "minLength": 2,
+        "pattern": "^[^-\\s][a-zA-Z0-9_\\s-]+$"
       },
       "inStock": {
         "type": "number",
@@ -25,7 +24,6 @@
       }
     },
     "required": [
-      "partNum",
       "description",
       "vendorPartNum",
       "vendor",

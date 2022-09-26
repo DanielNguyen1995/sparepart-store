@@ -29,9 +29,7 @@ export const handler = middy(
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Credentials': true
         },
-        body: JSON.stringify({
-          message: err
-        })
+        body: JSON.stringify(err)
       }
     }
   }

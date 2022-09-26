@@ -13,7 +13,7 @@ const logger = createLogger('part-data-access-layer')
 export class PartDAL {
     constructor(
         private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
-        private readonly partsTable = process.env.parts_TABLE,
+        private readonly partsTable = process.env.PARTS_TABLE,
         private readonly bucketName = process.env.ATTACHMENT_S3_BUCKET) { }
 
     getParts = async (userId: string): Promise<PartItem[]> => {
@@ -39,15 +39,15 @@ export class PartDAL {
         return part
     }
 
-    updatePart = async (userId: string, partNumber: string, updatePart: UpdatePartRequest): Promise<void> => {
-        logger.log('info', 'Update part info: '.concat(JSON.stringify({ ...updatePart, userId, partNumber })))
+    updatePart = async (userId: string, partNum: string, updatePart: UpdatePartRequest): Promise<void> => {
+        logger.log('info', 'Update part info: '.concat(JSON.stringify({ ...updatePart, userId, partNum })))
         await this.docClient.update({
             TableName: this.partsTable,
             Key: {
                 "userId": userId,
-                "partNumber": partNumber
+                "partNum": partNum
             },
-            UpdateExpression: "set #description=:description, inStock=:inStock",
+            UpdateExpression: "set description=:description, inStock=:inStock",
             ExpressionAttributeValues: {
                 ":description": updatePart.description,
                 ":inStock": updatePart.inStock
@@ -55,24 +55,24 @@ export class PartDAL {
         }).promise()
     }
 
-    deletePart = async (userId: string, partNumber: string): Promise<void> => {
-        logger.log('info', 'Delete part: '.concat(partNumber))
+    deletePart = async (userId: string, partNum: string): Promise<void> => {
+        logger.log('info', 'Delete part: '.concat(partNum))
         await this.docClient.delete({
             TableName: this.partsTable,
             Key: {
                 "userId": userId,
-                "partNumber": partNumber
+                "partNum": partNum
             }
         }).promise()
     }
 
-    getUploadURL = async (userId: string, partNumber: string): Promise<string> => {
+    getUploadURL = async (userId: string, partNum: string): Promise<string> => {
         const imageId = uuid.v4()
         const presignedUrl = await genPresignUrl(imageId)
         this.docClient.update({
             TableName: this.partsTable,
             Key: {
-                partNumber,
+                partNum,
                 userId
             },
             UpdateExpression: "set attachmentUrl = :attachmentUrl",
